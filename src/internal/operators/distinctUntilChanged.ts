@@ -72,7 +72,8 @@ export function distinctUntilChanged<T, K>(compare?: (a: K, b: K) => boolean, ke
         // part of the terse conditional. Then we capture `prev` to pass to `compare`, but set `prev` to the result of
         // either the `keySelector` -- if provided -- or the `value`, *then* it will execute the `compare`.
         // If `compare` returns truthy, it will move on to call `subscriber.next()`.
-        ((first && ((prev = value), 1)) || !compare!(prev, (prev = keySelector ? keySelector(value) : (value as any)))) &&
+        const key: any = keySelector ? keySelector(value) : value;
+        ((first && ((prev = key), 1)) || !compare!(prev, (prev = key))) &&
           subscriber.next(value);
         first = false;
       })
